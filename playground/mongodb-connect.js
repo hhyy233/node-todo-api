@@ -14,7 +14,7 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, client) => {
 	}
 	console.log('Connect to MongoDB server');
 	
-	const db = client.db('TodoApp');// add to v3
+	const db = client.db('TodoApp');// avaliable on v3
 	
 	// db.collection('Todos').insertOne({
 		// text: 'Something',
