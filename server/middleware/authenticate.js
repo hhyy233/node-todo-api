@@ -17,3 +17,4 @@ var authenticate = (req, res, next) => { // middleware
 };
 
 module.exports = {authenticate};
+
