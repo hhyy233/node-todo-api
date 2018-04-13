@@ -32,7 +32,7 @@ var UserSchema = new mongoose.Schema({
 	}]
 });
 
-// override
+// override the funciton to indicate wich properties we want the server to send back
 UserSchema.methods.toJSON = function () {
 	var user = this;
 	var userObject = user.toObject();
@@ -50,6 +50,27 @@ UserSchema.methods.generateAuthToken = function () {// we have this keyword
 	return user.save().then(() => {
 		return token;
 	});
+};
+
+//model method
+UserSchema.statics.findByToken = function (token) {
+	var User = this;
+	var decoded;
+	try {
+		decoded = jwt.verify(token, 'abc123');
+	} catch (e) {
+		// return new Promise((resolve, reject) => {
+			// reject();
+		// });
+		return Promise.reject();// fill out the param will return some info.
+	}
+	
+	return User.findOne({
+		'_id': decoded._id,
+		'tokens.token': token,
+		'tokens.access': 'auth'
+	});
+	
 };
 
 // Users
