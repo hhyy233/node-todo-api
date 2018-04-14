@@ -120,6 +120,21 @@ app.post('/users', (req, res) => {
 	});
 });
 
+// POST /users/login {email, password}
+app.post('/users/login', (req, res) => {
+	var body = _.pick(req.body, ['email', 'password']);
+
+	User.findByCredentials(body.email, body.password).then((user) => {
+		return user.generateAuthToken().then((token) => {
+			res.header('x-auth', token).send(user);
+		});
+	}).catch((e) => {
+		res.status(400).send(e);
+	});
+	
+});
+
+
 app.get('/users/me', authenticate, (req, res) => { 
 	// wrap the authenticate function so we can use the middleware
 	res.send(req.user);
